@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Services</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🚗 AutoCare Services</div>
+            <ul class="nav-links">
+                <li><a href="/customer/dashboard">Dashboard</a></li>
+                <li><a href="/customer/services">My Services</a></li>
+                <li><a href="/customer/book-service" class="btn-register">Book Service</a></li>
+                <li><a href="/auth/logout" class="btn-logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>My Service Bookings</h1>
+        
+        <div th:if="${services.isEmpty()}" class="empty-state">
+            <p>No services booked yet. <a href="/customer/book-service">Book a service now</a></p>
+        </div>
+        
+        <table class="table" th:unless="${services.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Service Type</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="service : ${services}">
+                    <td th:text="${service.id}"></td>
+                    <td th:text="${service.serviceType}"></td>
+                    <td th:text="${service.serviceDate}"></td>
+                    <td>
+                        <span class="status" th:classappend="${service.status == 'Completed' ? 'completed' : 'pending'}" th:text="${service.status}"></span>
+                    </td>
+                    <td><a th:href="@{/customer/track-service/{id}(id=${service.id})}" class="link">Track</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

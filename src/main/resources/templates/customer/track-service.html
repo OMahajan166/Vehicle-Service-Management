@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Service</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🚗 AutoCare Services</div>
+            <ul class="nav-links">
+                <li><a href="/customer/dashboard">Dashboard</a></li>
+                <li><a href="/customer/services">My Services</a></li>
+                <li><a href="/auth/logout" class="btn-logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h1>Track Your Service</h1>
+        
+        <div th:if="${service}" class="service-card">
+            <h2>Service #<span th:text="${service.id}"></span></h2>
+            
+            <div class="service-details">
+                <p><strong>Service Type:</strong> <span th:text="${service.serviceType}"></span></p>
+                <p><strong>Vehicle ID:</strong> <span th:text="${service.vehicleId}"></span></p>
+                <p><strong>Service Date:</strong> <span th:text="${service.serviceDate}"></span></p>
+                <p><strong>Description:</strong> <span th:text="${service.description}"></span></p>
+            </div>
+            
+            <div class="timeline">
+                <h3>Service Status: <span th:text="${service.status}"></span></h3>
+                <div class="progress-bar">
+                    <div class="progress" th:style="'width: ' + ${service.status == 'Completed' ? '100' : service.status == 'In Progress' ? '75' : service.status == 'Accepted' ? '50' : '25'} + '%'"></div>
+                </div>
+                
+                <ul class="status-list">
+                    <li class="status-item" th:classappend="${#lists.contains({'Pending', 'Accepted', 'In Progress', 'Completed'}, service.status) ? 'completed' : ''}">
+                        <span class="status-dot">✓</span> Pending
+                    </li>
+                    <li class="status-item" th:classappend="${#lists.contains({'Accepted', 'In Progress', 'Completed'}, service.status) ? 'completed' : ''}">
+                        <span class="status-dot">✓</span> Accepted
+                    </li>
+                    <li class="status-item" th:classappend="${#lists.contains({'In Progress', 'Completed'}, service.status) ? 'completed' : ''}">
+                        <span class="status-dot">✓</span> In Progress
+                    </li>
+                    <li class="status-item" th:classappend="${service.status == 'Completed' ? 'completed' : ''}">
+                        <span class="status-dot">✓</span> Completed
+                    </li>
+                </ul>
+            </div>
+            
+            <a href="/customer/services" class="btn-cancel">Back to Services</a>
+        </div>
+        
+        <div th:unless="${service}" class="error-message">
+            <p>Service not found.</p>
+            <a href="/customer/services">Back to Services</a>
+        </div>
+    </div>
+</body>
+</html>

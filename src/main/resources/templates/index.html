@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Service Management - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🚗 AutoCare Services</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/auth/login" class="btn-login">Login</a></li>
+                <li><a href="/auth/register" class="btn-register">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to AutoCare Services</h1>
+            <p>Your trusted partner for vehicle maintenance and repair</p>
+            <a href="/auth/register" class="cta-button">Book a Service Now</a>
+        </div>
+    </section>
+
+    <section class="services-overview">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>🛢️ Oil Change</h3>
+                    <p>Regular oil changes keep your engine running smoothly</p>
+                </div>
+                <div class="service-card">
+                    <h3>🚗 Car Washing</h3>
+                    <p>Professional washing and detailing for your vehicle</p>
+                </div>
+                <div class="service-card">
+                    <h3>⚙️ Engine Repair</h3>
+                    <p>Expert engine diagnostics and repair services</p>
+                </div>
+                <div class="service-card">
+                    <h3>🛞 Tire Replacement</h3>
+                    <p>Quality tire replacement and alignment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AutoCare Services. All rights reserved.</p>
+            <p>Phone: +1-800-123-4567 | Email: info@autocare.com</p>
+        </div>
+    </footer>
+</body>
+</html>

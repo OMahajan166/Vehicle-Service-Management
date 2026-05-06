@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vehicle Service Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🚗 AutoCare Services</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/auth/register" class="btn-register">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Login to Your Account</h1>
+            
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+            
+            <form action="/auth/login" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+            
+            <p class="auth-link">Don't have an account? <a href="/auth/register">Register here</a></p>
+            
+            <hr>
+            <h4>Demo Credentials:</h4>
+            <p><strong>Admin:</strong> admin@example.com / admin123</p>
+            <p><strong>Customer:</strong> customer@example.com / customer123</p>
+        </div>
+    </div>
+</body>
+</html>

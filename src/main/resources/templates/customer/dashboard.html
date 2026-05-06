@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🚗 AutoCare Services</div>
+            <ul class="nav-links">
+                <li><a href="/customer/dashboard">Dashboard</a></li>
+                <li><a href="/customer/vehicles">My Vehicles</a></li>
+                <li><a href="/customer/book-service">Book Service</a></li>
+                <li><a href="/customer/services">My Services</a></li>
+                <li><a href="/customer/bills">My Bills</a></li>
+                <li><a href="/auth/logout" class="btn-logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Welcome, <span th:text="${session.userName}"></span>!</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Bookings</h3>
+                <p class="stat-number" th:text="${totalBookings}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Services</h3>
+                <p class="stat-number" th:text="${activeServices}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed Services</h3>
+                <p class="stat-number" th:text="${completedServices}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Bills</h3>
+                <p class="stat-number" th:text="${totalBills}">0</p>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="/customer/add-vehicle" class="action-btn">➕ Add Vehicle</a>
+            <a href="/customer/book-service" class="action-btn">📅 Book Service</a>
+            <a href="/customer/services" class="action-btn">🔍 Track Services</a>
+            <a href="/customer/bills" class="action-btn">💰 View Bills</a>
+        </div>
+
+        <h2>Recent Services</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Service Type</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="service : ${recentServices}">
+                    <td th:text="${service.serviceType}"></td>
+                    <td th:text="${service.serviceDate}"></td>
+                    <td th:text="${service.status}"></td>
+                    <td><a th:href="@{/customer/track-service/{id}(id=${service.id})}" class="link">Track</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
