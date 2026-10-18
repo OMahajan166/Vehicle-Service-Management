@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Vehicles</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 AutoCare Services</div>
+
+        <ul class="nav-links">
+            <li><a href="/customer/dashboard">Dashboard</a></li>
+            <li><a href="/customer/book-service">Book Service</a></li>
+            <li><a href="/customer/vehicles">My Vehicles</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h1>My Vehicles</h1>
+
+    <a href="/customer/add-vehicle" class="action-btn">
+        ➕ Add New Vehicle
+    </a>
+
+    <br><br>
+
+    <div th:if="${vehicles.isEmpty()}" class="empty-state">
+        <h2>No Vehicles Found</h2>
+        <p>You haven't added any vehicles yet.</p>
+    </div>
+
+    <table class="table" th:unless="${vehicles.isEmpty()}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Vehicle Number</th>
+            <th>Company</th>
+            <th>Model</th>
+            <th>Fuel Type</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="vehicle : ${vehicles}">
+            <td th:text="${vehicle.id}"></td>
+            <td th:text="${vehicle.vehicleNumber}"></td>
+            <td th:text="${vehicle.company}"></td>
+            <td th:text="${vehicle.model}"></td>
+            <td th:text="${vehicle.fuelType}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

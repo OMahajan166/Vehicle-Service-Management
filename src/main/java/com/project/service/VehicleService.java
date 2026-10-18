@@ -13,7 +13,19 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+//    public Vehicle addVehicle(Vehicle vehicle) {
+//        return vehicleRepository.save(vehicle);
+//    }
     public Vehicle addVehicle(Vehicle vehicle) {
+
+        vehicle.setVehicleNumber(
+                vehicle.getVehicleNumber().trim().toUpperCase());
+
+        if (vehicleRepository.existsByVehicleNumber(
+                vehicle.getVehicleNumber())) {
+            throw new RuntimeException("Vehicle number already registered.");
+        }
+
         return vehicleRepository.save(vehicle);
     }
 

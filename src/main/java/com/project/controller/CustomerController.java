@@ -5,10 +5,17 @@ import com.project.model.Service;
 import com.project.model.Vehicle;
 import com.project.service.*;
 import jakarta.servlet.http.HttpSession;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.security.core.Authentication;
+import com.project.config.CustomUserDetails;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +31,13 @@ public class CustomerController {
     private BillService billService;
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String dashboard(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
         if (customerId == null) {
             return "redirect:/auth/login";
         }
@@ -45,8 +57,13 @@ public class CustomerController {
     }
 
     @GetMapping("/vehicles")
-    public String myVehicles(HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String myVehicles(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
         if (customerId == null) {
             return "redirect:/auth/login";
         }
@@ -61,17 +78,80 @@ public class CustomerController {
         return "customer/add-vehicle";
     }
 
+//    @PostMapping("/add-vehicle")
+//    public String addVehicle(@ModelAttribute Vehicle vehicle, HttpSession session, Model model) {
+//        Long customerId = (Long) session.getAttribute("userId");
+//        vehicle.setCustomerId(customerId);
+//        vehicleService.addVehicle(vehicle);
+//        return "redirect:/customer/vehicles";
+//    }
+    
+   // @PostMapping("/add-vehicle")
+//    public String addVehicle(@ModelAttribute Vehicle vehicle,
+//                             HttpSession session,
+//                             Model model) {
+//
+//        try {
+//            Long customerId = (Long) session.getAttribute("userId");
+//            vehicle.setCustomerId(customerId);
+//
+//            vehicleService.addVehicle(vehicle);
+//
+//            return "redirect:/customer/vehicles";
+//
+//        } catch (RuntimeException e) {
+//            model.addAttribute("vehicle", vehicle);
+//            model.addAttribute("error", e.getMessage());
+//
+//            return "customer/add-vehicle";
+//        }
+//    }
+    
     @PostMapping("/add-vehicle")
-    public String addVehicle(@ModelAttribute Vehicle vehicle, HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
-        vehicle.setCustomerId(customerId);
-        vehicleService.addVehicle(vehicle);
-        return "redirect:/customer/vehicles";
+    public String addVehicle(
+            @Valid
+            @ModelAttribute("vehicle") Vehicle vehicle,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+
+        if (result.hasErrors()) {
+            return "customer/add-vehicle";
+        }
+
+        try {
+
+        	CustomUserDetails user =
+        	        (CustomUserDetails)
+        	                authentication.getPrincipal();
+
+        	Long customerId =
+        	        user.getId();
+
+            vehicle.setCustomerId(customerId);
+
+            vehicleService.addVehicle(vehicle);
+
+            return "redirect:/customer/vehicles";
+
+        } catch (RuntimeException e) {
+
+            model.addAttribute(
+                    "error",
+                    e.getMessage());
+
+            return "customer/add-vehicle";
+        }
     }
 
     @GetMapping("/book-service")
-    public String bookServicePage(HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String bookServicePage(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
         List<Vehicle> vehicles = vehicleService.getVehiclesByCustomerId(customerId);
         model.addAttribute("vehicles", vehicles);
         model.addAttribute("service", new Service());
@@ -79,40 +159,140 @@ public class CustomerController {
     }
 
     @PostMapping("/book-service")
-    public String bookService(@ModelAttribute Service service, HttpSession session) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String bookService(
+            @Valid
+            @ModelAttribute("service") Service service,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
+
+        if (result.hasErrors()) {
+            model.addAttribute(
+                    "vehicles",
+                    vehicleService.getVehiclesByCustomerId(customerId));
+
+            return "customer/book-service";
+        }
+
         service.setCustomerId(customerId);
+
         serviceService.bookService(service);
+
         return "redirect:/customer/services";
     }
 
     @GetMapping("/services")
-    public String myServices(HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String myServices(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
         List<Service> services = serviceService.getServicesByCustomerId(customerId);
         model.addAttribute("services", services);
         return "customer/my-services";
     }
 
     @GetMapping("/track-service/{id}")
-    public String trackService(@PathVariable Long id, Model model) {
-        Optional<Service> service = serviceService.getServiceById(id);
-        model.addAttribute("service", service.orElse(null));
+    public String trackService(
+            @PathVariable Long id,
+            Authentication authentication,
+            Model model) {
+
+        CustomUserDetails user =
+        		(CustomUserDetails)
+                	authentication.getPrincipal();
+
+        Long customerId =
+        		user.getId();
+
+        // User not logged in
+        if (customerId == null) {
+            return "redirect:/auth/login";
+        }
+
+        Optional<Service> serviceOptional =
+                serviceService.getServiceById(id);
+
+        // Service does not exist
+        if (serviceOptional.isEmpty()) {
+            return "redirect:/customer/services";
+        }
+
+        Service service =
+                serviceOptional.get();
+
+        // Service belongs to another customer
+        if (!service.getCustomerId().equals(customerId)) {
+            return "redirect:/customer/services";
+        }
+
+        model.addAttribute(
+                "service",
+                service);
+
         return "customer/track-service";
     }
 
     @GetMapping("/bills")
-    public String myBills(HttpSession session, Model model) {
-        Long customerId = (Long) session.getAttribute("userId");
+    public String myBills(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
         List<Bill> bills = billService.getBillsByCustomerId(customerId);
         model.addAttribute("bills", bills);
         return "customer/my-bills";
     }
 
     @GetMapping("/bill/{id}")
-    public String viewBill(@PathVariable Long id, Model model) {
-        Optional<Bill> bill = billService.getBillById(id);
-        model.addAttribute("bill", bill.orElse(null));
+    public String viewBill(
+            @PathVariable Long id,
+            Authentication authentication,
+            Model model) {
+
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	Long customerId =
+    	        user.getId();
+
+        // User not logged in
+        if (customerId == null) {
+            return "redirect:/auth/login";
+        }
+
+        Optional<Bill> billOptional =
+                billService.getBillById(id);
+
+        // Bill does not exist
+        if (billOptional.isEmpty()) {
+            return "redirect:/customer/bills";
+        }
+
+        Bill bill =
+                billOptional.get();
+
+        // Bill belongs to another customer
+        if (!bill.getCustomerId().equals(customerId)) {
+            return "redirect:/customer/bills";
+        }
+
+        model.addAttribute(
+                "bill",
+                bill);
+
         return "customer/view-bill";
     }
 }

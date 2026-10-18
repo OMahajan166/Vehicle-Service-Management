@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">
+            🚗 AutoCare Services - Admin
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="/admin/dashboard">
+                Dashboard
+            </a></li>
+
+            <li><a href="/admin/customers">
+                Customers
+            </a></li>
+
+            <li><a href="/admin/mechanics">
+                Mechanics
+            </a></li>
+
+            <li><a href="/auth/logout"
+                   class="btn-logout">
+                Logout
+            </a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h1>Customers</h1>
+
+    <div th:if="${customers.isEmpty()}"
+         class="empty-state">
+
+        No customers registered.
+    </div>
+
+    <table class="table"
+           th:unless="${customers.isEmpty()}">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="customer : ${customers}">
+
+            <td th:text="${customer.id}"></td>
+
+            <td th:text="${customer.name}"></td>
+
+            <td th:text="${customer.email}"></td>
+
+            <td th:text="${customer.phone}"></td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

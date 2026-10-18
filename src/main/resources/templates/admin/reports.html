@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reports</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <h1>Reports</h1>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>Total Revenue</h3>
+            <p class="stat-number"
+               th:text="'₹'+${totalRevenue}">
+            </p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Services</h3>
+            <p class="stat-number"
+               th:text="${totalServices}">
+            </p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Completed Services</h3>
+            <p class="stat-number"
+               th:text="${completedServices}">
+            </p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Pending Services</h3>
+            <p class="stat-number"
+               th:text="${pendingServices}">
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

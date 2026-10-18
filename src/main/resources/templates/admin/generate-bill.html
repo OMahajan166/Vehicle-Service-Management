@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generate Bill</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="form-container">
+
+    <h1>Generate Bill</h1>
+
+    <form th:action="@{/admin/generate-bill}"
+          th:object="${bill}"
+          method="post">
+
+        <div class="form-group">
+            <label>Service ID</label>
+            <select th:field="*{serviceId}" required>
+                <option value="">Select Service</option>
+
+                <option
+                        th:each="service : ${services}"
+                        th:value="${service.id}"
+                        th:text="${service.id + ' - ' + service.serviceType}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Customer ID</label>
+            <input type="number"
+                   th:field="*{customerId}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Labor Cost</label>
+            <input type="number"
+                   step="0.01"
+                   th:field="*{laborCost}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Spare Parts Cost</label>
+            <input type="number"
+                   step="0.01"
+                   th:field="*{spareParts}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Tax</label>
+            <input type="number"
+                   step="0.01"
+                   th:field="*{tax}"
+                   required>
+        </div>
+
+        <button class="btn-submit">
+            Generate Bill
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

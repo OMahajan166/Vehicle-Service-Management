@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 AutoCare Services</div>
+
+        <ul class="nav-links">
+            <li><a href="/customer/dashboard">Dashboard</a></li>
+            <li><a href="/customer/bills">My Bills</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <div class="service-card" th:if="${bill}">
+
+        <h1>Invoice</h1>
+
+        <div class="service-details">
+
+            <p><strong>Bill ID :</strong>
+                <span th:text="${bill.id}"></span></p>
+
+            <p><strong>Service ID :</strong>
+                <span th:text="${bill.serviceId}"></span></p>
+
+            <p><strong>Labor Cost :</strong>
+                ₹<span th:text="${bill.laborCost}"></span></p>
+
+            <p><strong>Spare Parts :</strong>
+                ₹<span th:text="${bill.spareParts}"></span></p>
+
+            <p><strong>Tax :</strong>
+                ₹<span th:text="${bill.tax}"></span></p>
+
+            <hr>
+
+            <h2>
+                Total :
+                ₹<span th:text="${bill.totalAmount}"></span>
+            </h2>
+
+            <p>
+                <strong>Status :</strong>
+                <span th:text="${bill.status}"></span>
+            </p>
+
+        </div>
+
+        <a href="/customer/bills"
+           class="btn-cancel">
+            Back
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,16 +1,10 @@
 package com.project.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mechanics")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Mechanic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +32,79 @@ public class Mechanic {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+	public Mechanic() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Mechanic(Long id, String name, String specialization, String phone, String email, String experience,
+			LocalDateTime createdAt) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.specialization = specialization;
+		this.phone = phone;
+		this.email = email;
+		this.experience = experience;
+		this.createdAt = createdAt;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getExperience() {
+		return experience;
+	}
+
+	public void setExperience(String experience) {
+		this.experience = experience;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+    
+    
 }

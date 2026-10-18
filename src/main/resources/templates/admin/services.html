@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Services</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <h1>Manage Services</h1>
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Customer ID</th>
+            <th>Assign Mechanic</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="service : ${services}">
+            <td th:text="${service.id}"></td>
+            <td th:text="${service.serviceType}"></td>
+            <td th:text="${service.status}"></td>
+            <td th:text="${service.customerId}"></td>
+
+            <td>
+
+                <form th:action="@{/admin/assign-mechanic/{id}(id=${service.id})}"
+                      method="post">
+
+                    <select name="mechanicId">
+                        <option
+                                th:each="mechanic : ${mechanics}"
+                                th:value="${mechanic.id}"
+                                th:text="${mechanic.name}">
+                        </option>
+                    </select>
+
+                    <button type="submit">
+                        Assign
+                    </button>
+
+                </form>
+
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

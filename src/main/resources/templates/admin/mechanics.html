@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Mechanics</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 AutoCare Admin</div>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h1>Mechanics</h1>
+
+    <form th:action="@{/admin/add-mechanic}"
+          th:object="${newMechanic}"
+          method="post">
+
+        <div class="form-group">
+            <input type="text" placeholder="Name"
+                   th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="Specialization"
+                   th:field="*{specialization}" required>
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="Phone"
+                   th:field="*{phone}" required>
+        </div>
+
+        <div class="form-group">
+            <input type="email" placeholder="Email"
+                   th:field="*{email}" required>
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="Experience"
+                   th:field="*{experience}" required>
+        </div>
+
+        <button class="btn-submit">
+            Add Mechanic
+        </button>
+
+    </form>
+
+    <br>
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="mechanic : ${mechanics}">
+            <td th:text="${mechanic.name}"></td>
+            <td th:text="${mechanic.specialization}"></td>
+            <td th:text="${mechanic.email}"></td>
+            <td th:text="${mechanic.phone}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

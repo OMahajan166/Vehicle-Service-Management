@@ -5,11 +5,12 @@ import com.project.model.Mechanic;
 import com.project.model.Service;
 import com.project.model.User;
 import com.project.service.*;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import com.project.config.CustomUserDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,17 +30,24 @@ public class AdminController {
     private ContactService contactService;
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        String userRole = (String) session.getAttribute("userRole");
+    public String dashboard(Authentication authentication, Model model) {
+    	CustomUserDetails user =
+    	        (CustomUserDetails)
+    	                authentication.getPrincipal();
+
+    	String userRole =
+    	        user.getRole();
         if (!"ADMIN".equals(userRole)) {
             return "redirect:/auth/login";
         }
         
-        List<User> customers = userService.getUserByEmail("customer".substring(0,0)).map(u -> u).stream().toList();
+        List<User> customers =
+                userService.getUsersByRole(
+                        "CUSTOMER");
         List<Mechanic> mechanics = mechanicService.getAllMechanics();
         List<Service> services = serviceService.getAllServices();
         
-        model.addAttribute("totalCustomers", 0);
+        model.addAttribute("totalCustomers", customers.size());
         model.addAttribute("totalMechanics", mechanics.size());
         model.addAttribute("pendingServices", serviceService.getPendingServicesCount());
         model.addAttribute("completedServices", serviceService.getCompletedServicesCount());
@@ -51,7 +59,12 @@ public class AdminController {
 
     @GetMapping("/customers")
     public String manageCustomers(Model model) {
-        model.addAttribute("customers", new java.util.ArrayList<>());
+
+        model.addAttribute(
+                "customers",
+                userService.getUsersByRole(
+                        "CUSTOMER"));
+
         return "admin/customers";
     }
 

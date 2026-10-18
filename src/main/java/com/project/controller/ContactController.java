@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 @RequestMapping("/contact")
@@ -23,10 +25,26 @@ public class ContactController {
     }
 
     @PostMapping
-    public String submitContact(@ModelAttribute Contact contact, Model model) {
+    public String submitContact(
+            @Valid
+            @ModelAttribute("contact") Contact contact,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            return "contact";
+        }
+
         contactService.saveContact(contact);
-        model.addAttribute("success", "Your message has been sent successfully!");
-        model.addAttribute("contact", new Contact());
+
+        model.addAttribute(
+                "success",
+                "Your message has been sent successfully!");
+
+        model.addAttribute(
+                "contact",
+                new Contact());
+
         return "contact";
     }
 }

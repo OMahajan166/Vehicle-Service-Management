@@ -4,6 +4,8 @@ import com.project.model.User;
 import com.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -13,12 +15,32 @@ public class UserService {
     private UserRepository userRepository;
 
     public User registerUser(User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        user.getPassword()));
+
         user.setRole("CUSTOMER");
+
         return userRepository.save(user);
     }
 
-    public Optional<User> loginUser(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+    public Optional<User> loginUser(
+            String email,
+            String password) {
+
+        Optional<User> user =
+                userRepository.findByEmail(email);
+
+        if (user.isPresent()
+                && passwordEncoder.matches(
+                        password,
+                        user.get().getPassword())) {
+
+            return user;
+        }
+
+        return Optional.empty();
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -36,4 +58,11 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+    
+    public List<User> getUsersByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+    
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
 }
