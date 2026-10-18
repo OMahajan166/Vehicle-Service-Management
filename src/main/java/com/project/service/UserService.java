@@ -25,6 +25,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /** Create a login account with an explicit role (e.g. MECHANIC). Password is BCrypt-encoded. */
+    public User createAccount(User user, String role) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(role);
+        return userRepository.save(user);
+    }
+
+    /** Reset a user's password (stored BCrypt-encoded). */
+    public void changePassword(Long userId, String newPassword) {
+        userRepository.findById(userId).ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        });
+    }
+
     public Optional<User> loginUser(
             String email,
             String password) {

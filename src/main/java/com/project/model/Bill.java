@@ -32,6 +32,12 @@ public class Bill {
     @Column(nullable = false)
     private String status; // Pending, Paid
 
+    @Column(name = "payment_method")
+    private String paymentMethod; // UPI, Card, Cash, Net Banking
+
+    @Column(name = "paid_at")
+    private LocalDateTime paidAt;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -42,7 +48,8 @@ public class Bill {
     }
 
 	public Bill(Long id, Long serviceId, Long customerId, Double laborCost, Double spareParts, Double tax,
-			Double totalAmount, String status, LocalDateTime createdAt) {
+			Double totalAmount, String status, String paymentMethod, LocalDateTime paidAt,
+			LocalDateTime createdAt) {
 		super();
 		this.id = id;
 		this.serviceId = serviceId;
@@ -52,6 +59,8 @@ public class Bill {
 		this.tax = tax;
 		this.totalAmount = totalAmount;
 		this.status = status;
+		this.paymentMethod = paymentMethod;
+		this.paidAt = paidAt;
 		this.createdAt = createdAt;
 	}
 	
@@ -123,6 +132,22 @@ public class Bill {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public LocalDateTime getPaidAt() {
+		return paidAt;
+	}
+
+	public void setPaidAt(LocalDateTime paidAt) {
+		this.paidAt = paidAt;
 	}
 
 	public LocalDateTime getCreatedAt() {

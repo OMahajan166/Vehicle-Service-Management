@@ -22,7 +22,7 @@
     </nav>
 
     <div class="dashboard-container">
-        <h1>Welcome, <span th:text="${session.userName}"></span>!</h1>
+        <h1>Welcome, <span th:text="${userName}">Customer</span>! 👋</h1>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -64,7 +64,7 @@
                 <tr th:each="service : ${recentServices}">
                     <td th:text="${service.serviceType}"></td>
                     <td th:text="${service.serviceDate}"></td>
-                    <td th:text="${service.status}"></td>
+                    <td><span class="status" th:classappend="${service.status == 'Completed' ? 'completed' : (service.status == 'In Progress' ? 'in-progress' : (service.status == 'Accepted' ? 'accepted' : (service.status == 'Cancelled' ? 'cancelled' : 'pending')))}" th:text="${service.status}"></span></td>
                     <td><a th:href="@{/customer/track-service/{id}(id=${service.id})}" class="link">Track</a></td>
                 </tr>
             </tbody>

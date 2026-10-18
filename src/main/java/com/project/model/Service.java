@@ -29,6 +29,11 @@ public class Service {
     @Column(nullable = false)
     private String description;
 
+    // NOTE: Do NOT put @FutureOrPresent here. This is a JPA entity, so Hibernate
+    // re-validates it on EVERY update (status change, mechanic assignment...) —
+    // once the booked date passed, the service could never be updated again
+    // ("Could not commit JPA transaction"). The past-date rule is enforced
+    // only at booking time in CustomerController.bookService().
     @NotNull(message = "Service date is required")
     @Column(nullable = false)
     private LocalDate serviceDate;

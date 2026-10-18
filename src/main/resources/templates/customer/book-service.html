@@ -98,7 +98,8 @@
             <label>Preferred Date:</label>
 
             <input type="date"
-                   th:field="*{serviceDate}">
+                   th:field="*{serviceDate}"
+                   th:min="${today}">
 
             <small style="color:red"
                    th:if="${#fields.hasErrors('serviceDate')}"

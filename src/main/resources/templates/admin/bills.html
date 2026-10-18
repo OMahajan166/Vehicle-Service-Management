@@ -6,11 +6,48 @@
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 <span>AutoCare</span> Admin</div>
+        <ul class="nav-links">
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/customers">Customers</a></li>
+            <li><a href="/admin/mechanics">Mechanics</a></li>
+            <li><a href="/admin/services">Services</a></li>
+            <li><a href="/admin/bills">Bills</a></li>
+            <li><a href="/admin/generate-bill">Generate Bill</a></li>
+            <li><a href="/admin/reports">Reports</a></li>
+            <li><a href="/admin/contacts">Contacts</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="dashboard-container">
 
     <h1>All Bills</h1>
 
-    <table class="table">
+    <form method="get" th:action="@{/admin/bills}" style="margin:16px 0;">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="Bill / Service / Customer ID" style="padding:8px;min-width:220px;">
+        <select name="status" style="padding:8px;">
+            <option value="" th:selected="${selectedStatus == null || selectedStatus == ''}">All Statuses</option>
+            <option value="Pending" th:selected="${selectedStatus == 'Pending'}">Pending</option>
+            <option value="Paid" th:selected="${selectedStatus == 'Paid'}">Paid</option>
+        </select>
+        <button type="submit" class="btn-submit">🔍 Filter</button>
+        <a th:if="${!#strings.isEmpty(keyword) || !#strings.isEmpty(selectedStatus)}" th:href="@{/admin/bills}" class="btn-cancel">Clear</a>
+    </form>
+
+    <p th:if="${!#strings.isEmpty(keyword) || !#strings.isEmpty(selectedStatus)}">
+        Showing <strong th:text="${#lists.size(bills)}"></strong> bill(s) matching your filter.
+    </p>
+
+    <div th:if="${bills.isEmpty()}" class="empty-state">
+        No bills match your search/filter.
+    </div>
+
+    <table class="table" th:unless="${bills.isEmpty()}">
 
         <thead>
         <tr>
@@ -27,7 +64,7 @@
             <td th:text="${bill.id}"></td>
             <td th:text="${bill.customerId}"></td>
             <td th:text="'₹'+${bill.totalAmount}"></td>
-            <td th:text="${bill.status}"></td>
+            <td><span class="status" th:classappend="${bill.status == 'Paid' ? 'completed' : 'pending'}" th:text="${bill.status}"></span></td>
         </tr>
 
         </tbody>

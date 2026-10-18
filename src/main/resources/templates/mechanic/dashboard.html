@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mechanic Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🔧 AutoCare Mechanic</div>
+        <ul class="nav-links">
+            <li><a href="/mechanic/dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <div th:if="${success}" class="success-message" th:text="${success}"></div>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <!-- Logged-in account has no mechanic profile linked -->
+    <div th:if="${noProfile}" class="empty-state">
+        <h2>No Mechanic Profile Found</h2>
+        <p>Your login is not linked to a mechanic profile yet. Please ask the admin to add you from the Mechanics page.</p>
+    </div>
+
+    <div th:if="${mechanic}">
+        <h1>Welcome, <span th:text="${mechanic.name}"></span>! 🔧</h1>
+        <p>
+            Specialization: <strong th:text="${mechanic.specialization}"></strong> ·
+            Experience: <span th:text="${mechanic.experience}"></span>
+        </p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Jobs</h3>
+                <p class="stat-number" th:text="${totalJobs}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Jobs</h3>
+                <p class="stat-number" th:text="${activeJobs}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>In Progress</h3>
+                <p class="stat-number" th:text="${inProgressJobs}">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p class="stat-number" th:text="${completedJobs}">0</p>
+            </div>
+        </div>
+
+        <h2>My Assigned Jobs</h2>
+
+        <div th:if="${jobs.isEmpty()}" class="empty-state">
+            <h2>No Jobs Assigned Yet</h2>
+            <p>Jobs assigned to you by the admin will appear here.</p>
+        </div>
+
+        <table class="table" th:unless="${jobs.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Job ID</th>
+                <th>Service Type</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Vehicle ID</th>
+                <th>Customer ID</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job : ${jobs}">
+                <td th:text="${job.id}"></td>
+                <td th:text="${job.serviceType}"></td>
+                <td th:text="${job.serviceDate}"></td>
+                <td th:text="${job.description}"></td>
+                <td th:text="${job.vehicleId}"></td>
+                <td th:text="${job.customerId}"></td>
+                <td><span class="status" th:classappend="${job.status == 'Completed' ? 'completed' : (job.status == 'In Progress' ? 'in-progress' : (job.status == 'Accepted' ? 'accepted' : (job.status == 'Cancelled' ? 'cancelled' : 'pending')))}" th:text="${job.status}"></span></td>
+                <td>
+                    <form th:action="@{/mechanic/update-status/{id}(id=${job.id})}"
+                          method="post">
+                        <select name="status">
+                            <option value="Accepted" th:selected="${job.status == 'Accepted'}">Accepted</option>
+                            <option value="In Progress" th:selected="${job.status == 'In Progress'}">In Progress</option>
+                            <option value="Completed" th:selected="${job.status == 'Completed'}">Completed</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

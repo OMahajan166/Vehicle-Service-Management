@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Edit Vehicle</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 AutoCare Services</div>
+
+        <ul class="nav-links">
+            <li><a href="/customer/dashboard">Dashboard</a></li>
+            <li><a href="/customer/vehicles">My Vehicles</a></li>
+            <li><a href="/logout"
+                   class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <h1>Edit Vehicle</h1>
+
+    <!-- Duplicate Vehicle Error -->
+    <div th:if="${error}"
+         class="error-message"
+         th:text="${error}">
+    </div>
+
+    <form th:action="@{/customer/edit-vehicle/{id}(id=${vehicle.id})}"
+          th:object="${vehicle}"
+          method="POST">
+
+        <!-- Vehicle Number -->
+        <div class="form-group">
+            <label for="vehicleNumber">
+                Vehicle Number:
+            </label>
+
+            <input type="text"
+                   id="vehicleNumber"
+                   th:field="*{vehicleNumber}"
+                   placeholder="e.g. MH17ET3669">
+
+            <small style="color:red"
+                   th:if="${#fields.hasErrors('vehicleNumber')}"
+                   th:errors="*{vehicleNumber}">
+            </small>
+        </div>
+
+        <!-- Company -->
+        <div class="form-group">
+            <label for="company">
+                Vehicle Company:
+            </label>
+
+            <input type="text"
+                   id="company"
+                   th:field="*{company}"
+                   placeholder="e.g. Honda">
+
+            <small style="color:red"
+                   th:if="${#fields.hasErrors('company')}"
+                   th:errors="*{company}">
+            </small>
+        </div>
+
+        <!-- Model -->
+        <div class="form-group">
+            <label for="model">
+                Vehicle Model:
+            </label>
+
+            <input type="text"
+                   id="model"
+                   th:field="*{model}"
+                   placeholder="e.g. City">
+
+            <small style="color:red"
+                   th:if="${#fields.hasErrors('model')}"
+                   th:errors="*{model}">
+            </small>
+        </div>
+
+        <!-- Fuel Type -->
+        <div class="form-group">
+            <label for="fuelType">
+                Fuel Type:
+            </label>
+
+            <select id="fuelType"
+                    th:field="*{fuelType}">
+
+                <option value="">
+                    Select Fuel Type
+                </option>
+
+                <option value="Petrol">
+                    Petrol
+                </option>
+
+                <option value="Diesel">
+                    Diesel
+                </option>
+
+                <option value="CNG">
+                    CNG
+                </option>
+
+                <option value="Electric">
+                    Electric
+                </option>
+            </select>
+
+            <small style="color:red"
+                   th:if="${#fields.hasErrors('fuelType')}"
+                   th:errors="*{fuelType}">
+            </small>
+        </div>
+
+        <button type="submit"
+                class="btn-submit">
+            Update Vehicle
+        </button>
+
+        <a href="/customer/vehicles"
+           class="btn-cancel">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

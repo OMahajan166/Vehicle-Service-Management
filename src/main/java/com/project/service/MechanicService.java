@@ -25,6 +25,10 @@ public class MechanicService {
         return mechanicRepository.findById(id);
     }
 
+    public Optional<Mechanic> getMechanicByUserId(Long userId) {
+        return mechanicRepository.findByUserId(userId);
+    }
+
     public Mechanic updateMechanic(Mechanic mechanic) {
         return mechanicRepository.save(mechanic);
     }

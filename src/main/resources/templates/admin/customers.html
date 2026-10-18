@@ -10,27 +10,17 @@
 
 <nav class="navbar">
     <div class="container">
-        <div class="logo">
-            🚗 AutoCare Services - Admin
-        </div>
-
+        <div class="logo">🚗 <span>AutoCare</span> Admin</div>
         <ul class="nav-links">
-            <li><a href="/admin/dashboard">
-                Dashboard
-            </a></li>
-
-            <li><a href="/admin/customers">
-                Customers
-            </a></li>
-
-            <li><a href="/admin/mechanics">
-                Mechanics
-            </a></li>
-
-            <li><a href="/auth/logout"
-                   class="btn-logout">
-                Logout
-            </a></li>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/customers">Customers</a></li>
+            <li><a href="/admin/mechanics">Mechanics</a></li>
+            <li><a href="/admin/services">Services</a></li>
+            <li><a href="/admin/bills">Bills</a></li>
+            <li><a href="/admin/generate-bill">Generate Bill</a></li>
+            <li><a href="/admin/reports">Reports</a></li>
+            <li><a href="/admin/contacts">Contacts</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -39,10 +29,23 @@
 
     <h1>Customers</h1>
 
+    <form method="get" th:action="@{/admin/customers}" style="margin:16px 0;">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="Search by name, email or phone" style="padding:8px;min-width:280px;">
+        <button type="submit" class="btn-submit">🔍 Search</button>
+        <a th:if="${keyword}" th:href="@{/admin/customers}" class="btn-cancel">Clear</a>
+    </form>
+
+    <p th:if="${keyword}">
+        Showing <strong th:text="${#lists.size(customers)}"></strong> result(s)
+        for "<span th:text="${keyword}"></span>"
+    </p>
+
     <div th:if="${customers.isEmpty()}"
          class="empty-state">
 
-        No customers registered.
+        <span th:if="${keyword}">No customers match your search.</span>
+        <span th:unless="${keyword}">No customers registered.</span>
     </div>
 
     <table class="table"

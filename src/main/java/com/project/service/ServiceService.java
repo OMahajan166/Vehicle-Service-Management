@@ -24,6 +24,10 @@ public class ServiceService {
         return serviceRepository.findByCustomerId(customerId);
     }
 
+    public List<Service> getServicesByVehicleId(Long vehicleId) {
+        return serviceRepository.findByVehicleId(vehicleId);
+    }
+
     public List<Service> getServicesByMechanicId(Long mechanicId) {
         return serviceRepository.findByMechanicId(mechanicId);
     }

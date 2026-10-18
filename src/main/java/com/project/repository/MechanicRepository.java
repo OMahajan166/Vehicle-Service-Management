@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface MechanicRepository extends JpaRepository<Mechanic, Long> {
     Optional<Mechanic> findByEmail(String email);
+    Optional<Mechanic> findByUserId(Long userId);
 }

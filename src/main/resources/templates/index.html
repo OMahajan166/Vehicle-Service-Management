@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Service Management - Home</title>
+    <title>AutoCare Services — Vehicle Service Management</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
-            <div class="logo">🚗 AutoCare Services</div>
+            <div class="logo">🚗 <span>AutoCare</span> Services</div>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>
@@ -23,40 +23,147 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Welcome to AutoCare Services</h1>
-            <p>Your trusted partner for vehicle maintenance and repair</p>
-            <a href="/auth/register" class="cta-button">Book a Service Now</a>
+            <span class="hero-badge">⭐ Trusted Vehicle Service Centre</span>
+            <h1>Your Car Deserves <span class="highlight">Expert Care</span>,<br>Without the Wait</h1>
+            <p>Book services online, track your vehicle in real time, pay securely and download your invoice — all in one place.</p>
+            <div class="hero-actions">
+                <a href="/auth/register" class="cta-button">📅 Book a Service Now</a>
+                <a href="/services" class="cta-button secondary">Explore Services →</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hstat"><strong>15+</strong><small>Expert Mechanics</small></div>
+                <div class="hstat"><strong>5000+</strong><small>Vehicles Serviced</small></div>
+                <div class="hstat"><strong>4.9★</strong><small>Customer Rating</small></div>
+                <div class="hstat"><strong>Same-Day</strong><small>Delivery Promise</small></div>
+            </div>
+            <img th:src="@{/images/hero-garage.jpg}" alt="Expert mechanic servicing a car at AutoCare Services" class="hero-img">
         </div>
     </section>
 
-    <section class="services-overview">
+    <section class="section">
         <div class="container">
-            <h2>Our Services</h2>
+            <h2 class="section-title">Why Choose AutoCare?</h2>
+            <p class="section-subtitle">A complete digital service-centre experience — from booking to billing, everything is transparent and trackable.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="card-icon">📅</div>
+                    <h3>Easy Online Booking</h3>
+                    <p>Book a service in under a minute. Pick your vehicle, service type and a date that suits you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">📍</div>
+                    <h3>Live Service Tracking</h3>
+                    <p>Watch your vehicle move from Pending → In Progress → Completed, in real time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🔧</div>
+                    <h3>Expert Mechanics</h3>
+                    <p>Certified specialists for engines, brakes, AC, electricals and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🧾</div>
+                    <h3>Transparent Billing</h3>
+                    <p>Itemised bills — labour, spare parts and tax shown clearly. No surprises, ever.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">💳</div>
+                    <h3>Pay Online</h3>
+                    <p>Pay by UPI, card, net banking or cash and instantly download your invoice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="card-icon">🕐</div>
+                    <h3>Service History</h3>
+                    <p>Every booking and bill is saved — your vehicle's complete history, anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-overview" style="padding-top:0;">
+        <div class="container">
+            <h2>Our Popular Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <h3>🛢️ Oil Change</h3>
-                    <p>Regular oil changes keep your engine running smoothly</p>
+                    <div class="card-icon">🛢️</div>
+                    <h3>Oil Change</h3>
+                    <p>Complete engine oil & filter replacement for smooth performance.</p>
+                    <span class="price-hint">Starting ₹999</span>
                 </div>
                 <div class="service-card">
-                    <h3>🚗 Car Washing</h3>
-                    <p>Professional washing and detailing for your vehicle</p>
+                    <div class="card-icon">⚙️</div>
+                    <h3>Engine Repair</h3>
+                    <p>Advanced diagnostics and expert engine repair by specialists.</p>
+                    <span class="price-hint">Starting ₹2,499</span>
                 </div>
                 <div class="service-card">
-                    <h3>⚙️ Engine Repair</h3>
-                    <p>Expert engine diagnostics and repair services</p>
+                    <div class="card-icon">🛞</div>
+                    <h3>Tyres & Alignment</h3>
+                    <p>Tyre replacement, wheel balancing and precision alignment.</p>
+                    <span class="price-hint">Starting ₹499</span>
                 </div>
                 <div class="service-card">
-                    <h3>🛞 Tire Replacement</h3>
-                    <p>Quality tire replacement and alignment</p>
+                    <div class="card-icon">❄️</div>
+                    <h3>AC Service</h3>
+                    <p>AC gas refill, cooling check and complete AC repair.</p>
+                    <span class="price-hint">Starting ₹1,299</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Four simple steps and your vehicle is back on the road.</p>
+            <div class="steps">
+                <div class="step"><div class="step-num">1</div><h3>Register & Add Vehicle</h3><p>Create your account and add your vehicle's details once.</p></div>
+                <div class="step"><div class="step-num">2</div><h3>Book a Service</h3><p>Choose the service type, describe the issue, pick a date.</p></div>
+                <div class="step"><div class="step-num">3</div><h3>Track in Real Time</h3><p>A mechanic is assigned and you follow every status update live.</p></div>
+                <div class="step"><div class="step-num">4</div><h3>Pay & Download Invoice</h3><p>Pay online and get a printable invoice instantly. Done!</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <h2 class="section-title">One Platform, Three Portals</h2>
+            <p class="section-subtitle">Dedicated dashboards designed for everyone at the service centre.</p>
+            <div class="roles-grid">
+                <div class="role-card customer">
+                    <h3>🧑 For Customers</h3>
+                    <p>Manage vehicles, book & track services, pay bills and download invoices.</p>
+                    <a href="/auth/register">Get Started →</a>
+                </div>
+                <div class="role-card admin">
+                    <h3>👨‍💼 For Admins</h3>
+                    <p>Manage customers, mechanics, bookings, billing and business reports.</p>
+                    <a href="/auth/login">Admin Login →</a>
+                </div>
+                <div class="role-card mechanic">
+                    <h3>🔧 For Mechanics</h3>
+                    <p>See assigned jobs, update work status and complete jobs efficiently.</p>
+                    <a href="/auth/login">Mechanic Login →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Ready to give your vehicle the care it deserves?</h2>
+                <p>Join thousands of happy customers at AutoCare Services today.</p>
+                <a href="/auth/register" class="cta-button">Create Free Account →</a>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 AutoCare Services. All rights reserved.</p>
-            <p>Phone: +1-800-123-4567 | Email: info@autocare.com</p>
+            <p class="footer-brand">🚗 AutoCare Services</p>
+            <p>Your trusted partner for vehicle maintenance and repair</p>
+            <p>📞 +91 98765 43210 &nbsp;|&nbsp; 📧 support@example.com &nbsp;|&nbsp; 🕐 Mon–Sat, 9 AM – 8 PM</p>
+            <p>&copy; 2026 AutoCare Services. All rights reserved.</p>
         </div>
     </footer>
 </body>

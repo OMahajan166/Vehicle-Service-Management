@@ -60,9 +60,15 @@
 
             <td>
                 <a th:href="@{/customer/bill/{id}(id=${bill.id})}"
-                   class="link">
-                    View
-                </a>
+                   class="link">View</a>
+                <span th:if="${bill.status != 'Paid'}">
+                    | <a th:href="@{/customer/bill/{id}(id=${bill.id})}"
+                         class="link"><strong>Pay Now</strong></a>
+                </span>
+                <span th:if="${bill.status == 'Paid'}">
+                    | <a th:href="@{/customer/bill/{id}/print(id=${bill.id})}"
+                         class="link">Print Invoice</a>
+                </span>
             </td>
         </tr>
 

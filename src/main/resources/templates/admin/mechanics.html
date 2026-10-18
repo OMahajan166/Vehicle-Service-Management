@@ -9,13 +9,27 @@
 
 <nav class="navbar">
     <div class="container">
-        <div class="logo">🚗 AutoCare Admin</div>
+        <div class="logo">🚗 <span>AutoCare</span> Admin</div>
+        <ul class="nav-links">
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/customers">Customers</a></li>
+            <li><a href="/admin/mechanics">Mechanics</a></li>
+            <li><a href="/admin/services">Services</a></li>
+            <li><a href="/admin/bills">Bills</a></li>
+            <li><a href="/admin/generate-bill">Generate Bill</a></li>
+            <li><a href="/admin/reports">Reports</a></li>
+            <li><a href="/admin/contacts">Contacts</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
     </div>
 </nav>
 
 <div class="dashboard-container">
 
     <h1>Mechanics</h1>
+
+    <div th:if="${success}" class="success-message" th:text="${success}"></div>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
 
     <form th:action="@{/admin/add-mechanic}"
           th:object="${newMechanic}"
@@ -46,6 +60,11 @@
                    th:field="*{experience}" required>
         </div>
 
+        <div class="form-group">
+            <input type="password" name="password" minlength="6"
+                   placeholder="Login password (mechanic logs in with their email + this password)" required>
+        </div>
+
         <button class="btn-submit">
             Add Mechanic
         </button>
@@ -54,7 +73,23 @@
 
     <br>
 
-    <table class="table">
+    <form method="get" th:action="@{/admin/mechanics}" style="margin:16px 0;">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="Search mechanics by name, specialization, email or phone" style="padding:8px;min-width:340px;">
+        <button type="submit" class="btn-submit">🔍 Search</button>
+        <a th:if="${keyword}" th:href="@{/admin/mechanics}" class="btn-cancel">Clear</a>
+    </form>
+
+    <p th:if="${keyword}">
+        Showing <strong th:text="${#lists.size(mechanics)}"></strong> mechanic(s)
+        for "<span th:text="${keyword}"></span>"
+    </p>
+
+    <div th:if="${mechanics.isEmpty()}" class="empty-state">
+        No mechanics match your search.
+    </div>
+
+    <table class="table" th:unless="${mechanics.isEmpty()}">
 
         <thead>
         <tr>
@@ -62,6 +97,7 @@
             <th>Specialization</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -71,6 +107,18 @@
             <td th:text="${mechanic.specialization}"></td>
             <td th:text="${mechanic.email}"></td>
             <td th:text="${mechanic.phone}"></td>
+            <td>
+                <a th:href="@{/admin/edit-mechanic/{id}(id=${mechanic.id})}"
+                   class="link">Edit</a>
+                <form th:action="@{/admin/delete-mechanic/{id}(id=${mechanic.id})}"
+                      method="post" style="display:inline;"
+                      onsubmit="return confirm('Delete this mechanic? This cannot be undone.');">
+                    <button type="submit" class="link"
+                            style="background:none;border:none;color:#dc3545;cursor:pointer;padding:0;">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
         </tbody>
 

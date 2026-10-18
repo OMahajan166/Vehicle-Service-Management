@@ -25,6 +25,10 @@ public class Mechanic {
     @Column(nullable = false)
     private String experience;
 
+    /** Login account (users table) for this mechanic — null for old records without a login */
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -96,6 +100,14 @@ public class Mechanic {
 
 	public void setExperience(String experience) {
 		this.experience = experience;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public LocalDateTime getCreatedAt() {

@@ -23,6 +23,9 @@
 
     <h1>My Vehicles</h1>
 
+    <div th:if="${success}" class="success-message" th:text="${success}"></div>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
     <a href="/customer/add-vehicle" class="action-btn">
         ➕ Add New Vehicle
     </a>
@@ -42,6 +45,7 @@
             <th>Company</th>
             <th>Model</th>
             <th>Fuel Type</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -52,6 +56,18 @@
             <td th:text="${vehicle.company}"></td>
             <td th:text="${vehicle.model}"></td>
             <td th:text="${vehicle.fuelType}"></td>
+            <td>
+                <a th:href="@{/customer/edit-vehicle/{id}(id=${vehicle.id})}"
+                   class="link">Edit</a>
+                <form th:action="@{/customer/delete-vehicle/{id}(id=${vehicle.id})}"
+                      method="post" style="display:inline;"
+                      onsubmit="return confirm('Delete this vehicle? This cannot be undone.');">
+                    <button type="submit" class="link"
+                            style="background:none;border:none;color:#dc3545;cursor:pointer;padding:0;">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice — AutoCare Services</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+        body { background: #f2f4f7; padding: 24px; color: #222; }
+        .invoice { max-width: 720px; margin: auto; background: #fff; padding: 36px 40px; border: 1px solid #ddd; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0d6efd; padding-bottom: 16px; }
+        .brand h1 { font-size: 24px; color: #0d6efd; }
+        .brand p { font-size: 12px; color: #666; margin-top: 4px; }
+        .inv-meta { text-align: right; font-size: 13px; }
+        .inv-meta h2 { font-size: 20px; letter-spacing: 2px; }
+        .stamp { display: inline-block; margin-top: 6px; padding: 3px 12px; border: 2px solid #198754; color: #198754;
+                 font-weight: bold; border-radius: 4px; transform: rotate(-4deg); }
+        .stamp.unpaid { border-color: #dc3545; color: #dc3545; }
+        h3 { margin: 22px 0 8px; font-size: 14px; text-transform: uppercase; color: #555; }
+        .info p { font-size: 14px; margin: 3px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 9px 10px; text-align: left; }
+        th { background: #f4f6fb; }
+        td.amount, th.amount { text-align: right; }
+        tr.total td { font-size: 16px; font-weight: bold; background: #f4f6fb; }
+        .footer { margin-top: 28px; font-size: 12px; color: #777; text-align: center; border-top: 1px dashed #ccc; padding-top: 12px; }
+        .actions { max-width: 720px; margin: 16px auto 0; text-align: center; }
+        .actions button, .actions a { padding: 10px 22px; font-size: 15px; border: none; border-radius: 6px;
+                                      background: #0d6efd; color: #fff; cursor: pointer; text-decoration: none; margin: 0 4px; }
+        .actions a { background: #6c757d; }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .invoice { border: none; }
+            .actions { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice">
+    <div class="header">
+        <div class="brand">
+            <h1>🚗 AutoCare Services</h1>
+            <p>Vehicle Service Management System<br>Your trusted vehicle service partner</p>
+        </div>
+        <div class="inv-meta">
+            <h2>INVOICE</h2>
+            <p>Invoice No: <strong>#<span th:text="${bill.id}"></span></strong></p>
+            <p>Date: <span th:text="${#temporals.format(bill.createdAt,'dd-MM-yyyy')}"></span></p>
+            <span class="stamp" th:if="${bill.status == 'Paid'}">PAID ✓</span>
+            <span class="stamp unpaid" th:if="${bill.status != 'Paid'}">UNPAID</span>
+        </div>
+    </div>
+
+    <h3>Billed To</h3>
+    <div class="info" th:if="${customer}">
+        <p><strong th:text="${customer.name}"></strong></p>
+        <p th:text="${customer.email}"></p>
+        <p th:text="${customer.phone}"></p>
+    </div>
+
+    <h3>Service Details</h3>
+    <div class="info" th:if="${service}">
+        <p>Service ID: <strong>#<span th:text="${service.id}"></span></strong> ·
+           Type: <strong th:text="${service.serviceType}"></strong> ·
+           Date: <span th:text="${service.serviceDate}"></span> ·
+           Status: <span th:text="${service.status}"></span></p>
+        <p th:if="${vehicle}">Vehicle: <strong th:text="${vehicle.company + ' ' + vehicle.model}"></strong>
+           (<span th:text="${vehicle.vehicleNumber}"></span>, <span th:text="${vehicle.fuelType}"></span>)</p>
+        <p th:text="${service.description}"></p>
+    </div>
+
+    <h3>Charges</h3>
+    <table>
+        <thead>
+            <tr><th>Description</th><th class="amount">Amount (₹)</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Labor Cost</td><td class="amount" th:text="${bill.laborCost}"></td></tr>
+            <tr><td>Spare Parts</td><td class="amount" th:text="${bill.spareParts}"></td></tr>
+            <tr><td>Tax</td><td class="amount" th:text="${bill.tax}"></td></tr>
+            <tr class="total"><td>Total Amount</td><td class="amount">₹<span th:text="${bill.totalAmount}"></span></td></tr>
+        </tbody>
+    </table>
+
+    <div class="info" th:if="${bill.status == 'Paid'}" style="margin-top:14px;">
+        <p>Payment Method: <strong th:text="${bill.paymentMethod}"></strong>
+           <span th:if="${bill.paidAt}"> · Paid on
+               <span th:text="${#temporals.format(bill.paidAt,'dd-MM-yyyy HH:mm')}"></span></span></p>
+    </div>
+
+    <div class="footer">
+        Thank you for choosing AutoCare Services! · This is a computer-generated invoice.
+    </div>
+</div>
+
+<div class="actions">
+    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <a href="/customer/bills">← Back to My Bills</a>
+</div>
+
+<script>
+    // Open the print dialog automatically (user can choose "Save as PDF")
+    window.addEventListener('load', function () { setTimeout(function(){ window.print(); }, 300); });
+</script>
+
+</body>
+</html>

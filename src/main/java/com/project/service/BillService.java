@@ -5,6 +5,7 @@ import com.project.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,18 @@ public class BillService {
 
     public Bill updateBill(Bill bill) {
         return billRepository.save(bill);
+    }
+
+    /** Mark a bill as paid. Returns false if it was already paid. */
+    public boolean payBill(Bill bill, String paymentMethod) {
+        if ("Paid".equalsIgnoreCase(bill.getStatus())) {
+            return false;
+        }
+        bill.setStatus("Paid");
+        bill.setPaymentMethod(paymentMethod);
+        bill.setPaidAt(LocalDateTime.now());
+        billRepository.save(bill);
+        return true;
     }
 
     public List<Bill> getAllBills() {

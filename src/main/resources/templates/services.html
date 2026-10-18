@@ -1,56 +1,114 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Our Services</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services — AutoCare Services</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
 <nav class="navbar">
     <div class="container">
-        <div class="logo">🚗 AutoCare Services</div>
+        <div class="logo">🚗 <span>AutoCare</span> Services</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/auth/login" class="btn-login">Login</a></li>
+            <li><a href="/auth/register" class="btn-register">Register</a></li>
+        </ul>
     </div>
 </nav>
 
 <div class="dashboard-container">
 
     <h1>Our Services</h1>
+    <p style="color:var(--muted);margin-bottom:2rem;">Transparent pricing, expert mechanics and genuine spare parts — book any service online and track it live.</p>
 
     <div class="services-grid">
 
         <div class="service-card">
-            <h3>🛢 Oil Change</h3>
-            <p>Complete engine oil replacement.</p>
+            <div class="card-icon">🛢️</div>
+            <h3>Oil Change</h3>
+            <p>Complete engine oil & filter replacement with premium-grade oil.</p>
+            <span class="price-hint">Starting ₹999</span>
         </div>
 
         <div class="service-card">
-            <h3>🚗 Car Wash</h3>
-            <p>Professional washing and detailing.</p>
+            <div class="card-icon">🚗</div>
+            <h3>Car Wash & Detailing</h3>
+            <p>Professional exterior wash, interior cleaning and polishing.</p>
+            <span class="price-hint">Starting ₹399</span>
         </div>
 
         <div class="service-card">
-            <h3>⚙ Engine Repair</h3>
-            <p>Complete diagnostics and repair.</p>
+            <div class="card-icon">⚙️</div>
+            <h3>Engine Repair</h3>
+            <p>Complete engine diagnostics and repair by certified specialists.</p>
+            <span class="price-hint">Starting ₹2,499</span>
         </div>
 
         <div class="service-card">
-            <h3>🛞 Tire Replacement</h3>
-            <p>Wheel balancing and alignment.</p>
+            <div class="card-icon">🛞</div>
+            <h3>Tyres & Alignment</h3>
+            <p>Tyre replacement, wheel balancing and precision alignment.</p>
+            <span class="price-hint">Starting ₹499</span>
         </div>
 
         <div class="service-card">
-            <h3>🔋 Battery Service</h3>
-            <p>Battery check and replacement.</p>
+            <div class="card-icon">🔋</div>
+            <h3>Battery Service</h3>
+            <p>Battery health check, charging and replacement with warranty.</p>
+            <span class="price-hint">Starting ₹299</span>
         </div>
 
         <div class="service-card">
-            <h3>🛠 General Inspection</h3>
-            <p>Complete vehicle health checkup.</p>
+            <div class="card-icon">🛑</div>
+            <h3>Brake Service</h3>
+            <p>Brake pads, discs and fluid — safety checked and road-tested.</p>
+            <span class="price-hint">Starting ₹899</span>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">❄️</div>
+            <h3>AC Service & Repair</h3>
+            <p>AC gas refill, cooling performance check and complete repair.</p>
+            <span class="price-hint">Starting ₹1,299</span>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">🔍</div>
+            <h3>General Inspection</h3>
+            <p>Complete 50-point vehicle health checkup with a detailed report.</p>
+            <span class="price-hint">Starting ₹599</span>
+        </div>
+
+        <div class="service-card">
+            <div class="card-icon">🎨</div>
+            <h3>Denting & Painting</h3>
+            <p>Dent removal and premium paint jobs that restore the showroom look.</p>
+            <span class="price-hint">Starting ₹1,999</span>
         </div>
 
     </div>
 
+    <div class="cta-banner" style="margin-top:3rem;">
+        <h2>Need one of these services?</h2>
+        <p>Book online in a minute and track your vehicle until it's ready.</p>
+        <a href="/auth/register" class="cta-button">📅 Book a Service →</a>
+    </div>
+
 </div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="footer-brand">🚗 AutoCare Services</p>
+        <p>📞 +91 98765 43210 &nbsp;|&nbsp; 📧 support@example.com &nbsp;|&nbsp; 🕐 Mon–Sat, 9 AM – 8 PM</p>
+        <p>&copy; 2026 AutoCare Services. All rights reserved.</p>
+    </div>
+</footer>
 
 </body>
 </html>

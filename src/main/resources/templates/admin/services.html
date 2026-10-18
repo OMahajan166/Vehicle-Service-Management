@@ -6,11 +6,51 @@
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">🚗 <span>AutoCare</span> Admin</div>
+        <ul class="nav-links">
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/customers">Customers</a></li>
+            <li><a href="/admin/mechanics">Mechanics</a></li>
+            <li><a href="/admin/services">Services</a></li>
+            <li><a href="/admin/bills">Bills</a></li>
+            <li><a href="/admin/generate-bill">Generate Bill</a></li>
+            <li><a href="/admin/reports">Reports</a></li>
+            <li><a href="/admin/contacts">Contacts</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="dashboard-container">
 
     <h1>Manage Services</h1>
 
-    <table class="table">
+    <form method="get" th:action="@{/admin/services}" style="margin:16px 0;">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="Search type, description or ID" style="padding:8px;min-width:240px;">
+        <select name="status" style="padding:8px;">
+            <option value="" th:selected="${selectedStatus == null || selectedStatus == ''}">All Statuses</option>
+            <option value="Pending" th:selected="${selectedStatus == 'Pending'}">Pending</option>
+            <option value="Accepted" th:selected="${selectedStatus == 'Accepted'}">Accepted</option>
+            <option value="In Progress" th:selected="${selectedStatus == 'In Progress'}">In Progress</option>
+            <option value="Completed" th:selected="${selectedStatus == 'Completed'}">Completed</option>
+            <option value="Cancelled" th:selected="${selectedStatus == 'Cancelled'}">Cancelled</option>
+        </select>
+        <button type="submit" class="btn-submit">🔍 Filter</button>
+        <a th:if="${!#strings.isEmpty(keyword) || !#strings.isEmpty(selectedStatus)}" th:href="@{/admin/services}" class="btn-cancel">Clear</a>
+    </form>
+
+    <p th:if="${!#strings.isEmpty(keyword) || !#strings.isEmpty(selectedStatus)}">
+        Showing <strong th:text="${#lists.size(services)}"></strong> service(s) matching your filter.
+    </p>
+
+    <div th:if="${services.isEmpty()}" class="empty-state">
+        No services match your search/filter.
+    </div>
+
+    <table class="table" th:unless="${services.isEmpty()}">
 
         <thead>
         <tr>
@@ -18,6 +58,7 @@
             <th>Service Type</th>
             <th>Status</th>
             <th>Customer ID</th>
+            <th>Update Status</th>
             <th>Assign Mechanic</th>
         </tr>
         </thead>
@@ -27,8 +68,22 @@
         <tr th:each="service : ${services}">
             <td th:text="${service.id}"></td>
             <td th:text="${service.serviceType}"></td>
-            <td th:text="${service.status}"></td>
+            <td><span class="status" th:classappend="${service.status == 'Completed' ? 'completed' : (service.status == 'In Progress' ? 'in-progress' : (service.status == 'Accepted' ? 'accepted' : (service.status == 'Cancelled' ? 'cancelled' : 'pending')))}" th:text="${service.status}"></span></td>
             <td th:text="${service.customerId}"></td>
+
+            <td>
+                <form th:action="@{/admin/update-service-status/{id}(id=${service.id})}"
+                      method="post">
+                    <select name="status">
+                        <option value="Pending" th:selected="${service.status == 'Pending'}">Pending</option>
+                        <option value="Accepted" th:selected="${service.status == 'Accepted'}">Accepted</option>
+                        <option value="In Progress" th:selected="${service.status == 'In Progress'}">In Progress</option>
+                        <option value="Completed" th:selected="${service.status == 'Completed'}">Completed</option>
+                        <option value="Cancelled" th:selected="${service.status == 'Cancelled'}">Cancelled</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
 
             <td>
 

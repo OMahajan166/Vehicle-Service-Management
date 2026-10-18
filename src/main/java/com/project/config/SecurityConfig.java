@@ -62,6 +62,9 @@ public class SecurityConfig {
                         .requestMatchers("/customer/**")
                         .hasRole("CUSTOMER")
 
+                        .requestMatchers("/mechanic/**")
+                        .hasRole("MECHANIC")
+
                         .anyRequest()
                         .authenticated())
 
@@ -81,6 +84,11 @@ public class SecurityConfig {
 
                        response.sendRedirect(
                                "/admin/dashboard");
+
+                   } else if ("MECHANIC".equals(user.getRole())) {
+
+                       response.sendRedirect(
+                               "/mechanic/dashboard");
 
                    } else {
 

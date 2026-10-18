@@ -38,6 +38,16 @@ public class VehicleService {
     }
 
     public Vehicle updateVehicle(Vehicle vehicle) {
+        if (vehicle.getVehicleNumber() != null) {
+            vehicle.setVehicleNumber(
+                    vehicle.getVehicleNumber().trim().toUpperCase());
+            // Reject a number that belongs to a DIFFERENT vehicle
+            vehicleRepository.findByVehicleNumber(vehicle.getVehicleNumber())
+                    .filter(existing -> !existing.getId().equals(vehicle.getId()))
+                    .ifPresent(existing -> {
+                        throw new RuntimeException("Vehicle number already registered.");
+                    });
+        }
         return vehicleRepository.save(vehicle);
     }
 

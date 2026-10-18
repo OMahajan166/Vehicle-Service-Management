@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
     List<Service> findByCustomerId(Long customerId);
+    List<Service> findByVehicleId(Long vehicleId);
     List<Service> findByMechanicId(Long mechanicId);
     List<Service> findByStatus(String status);
 }
