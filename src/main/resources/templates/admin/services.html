@@ -27,6 +27,9 @@
 
     <h1>Manage Services</h1>
 
+    <div th:if="${success}" class="success-message" th:text="${success}"></div>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
     <form method="get" th:action="@{/admin/services}" style="margin:16px 0;">
         <input type="text" name="keyword" th:value="${keyword}"
                placeholder="Search type, description or ID" style="padding:8px;min-width:240px;">
@@ -58,6 +61,7 @@
             <th>Service Type</th>
             <th>Status</th>
             <th>Customer ID</th>
+            <th>Assigned Mechanic</th>
             <th>Update Status</th>
             <th>Assign Mechanic</th>
         </tr>
@@ -70,6 +74,13 @@
             <td th:text="${service.serviceType}"></td>
             <td><span class="status" th:classappend="${service.status == 'Completed' ? 'completed' : (service.status == 'In Progress' ? 'in-progress' : (service.status == 'Accepted' ? 'accepted' : (service.status == 'Cancelled' ? 'cancelled' : 'pending')))}" th:text="${service.status}"></span></td>
             <td th:text="${service.customerId}"></td>
+
+            <td>
+                <strong th:if="${service.mechanicId == null}">— Not assigned</strong>
+                <strong th:each="m : ${mechanics}"
+                        th:if="${m.id == service.mechanicId}"
+                        th:text="${m.name}"></strong>
+            </td>
 
             <td>
                 <form th:action="@{/admin/update-service-status/{id}(id=${service.id})}"
@@ -90,11 +101,16 @@
                 <form th:action="@{/admin/assign-mechanic/{id}(id=${service.id})}"
                       method="post">
 
-                    <select name="mechanicId">
+                    <select name="mechanicId" required>
+                        <option value="" disabled
+                                th:selected="${service.mechanicId == null}">
+                            -- Select Mechanic --
+                        </option>
                         <option
                                 th:each="mechanic : ${mechanics}"
                                 th:value="${mechanic.id}"
-                                th:text="${mechanic.name}">
+                                th:text="${mechanic.name}"
+                                th:selected="${mechanic.id == service.mechanicId}">
                         </option>
                     </select>
 
@@ -113,5 +129,5 @@
 
 </div>
 
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4c892c4aabb49d5',t:'MTc5MjMzNzMxMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

@@ -289,24 +289,41 @@ public class AdminController {
     }
 
     @PostMapping("/update-service-status/{id}")
-    public String updateServiceStatus(@PathVariable Long id, @RequestParam String status) {
+    public String updateServiceStatus(
+            @PathVariable Long id,
+            @RequestParam String status,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         Optional<Service> service = serviceService.getServiceById(id);
         if (service.isPresent()) {
             Service s = service.get();
             s.setStatus(status);
             serviceService.updateService(s);
+            redirectAttributes.addFlashAttribute("success",
+                    "Service #" + id + " status updated to \"" + status + "\".");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Service #" + id + " not found.");
         }
         return "redirect:/admin/services";
     }
 
     @PostMapping("/assign-mechanic/{id}")
-    public String assignMechanic(@PathVariable Long id, @RequestParam Long mechanicId) {
+    public String assignMechanic(
+            @PathVariable Long id,
+            @RequestParam Long mechanicId,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         Optional<Service> service = serviceService.getServiceById(id);
-        if (service.isPresent()) {
+        Optional<Mechanic> mechanic = mechanicService.getMechanicById(mechanicId);
+        if (service.isPresent() && mechanic.isPresent()) {
             Service s = service.get();
             s.setMechanicId(mechanicId);
             s.setStatus("Accepted");
             serviceService.updateService(s);
+            redirectAttributes.addFlashAttribute("success",
+                    "Service #" + id + " assigned to " + mechanic.get().getName()
+                            + " (status: Accepted).");
+        } else {
+            redirectAttributes.addFlashAttribute("error",
+                    "Could not assign mechanic — service or mechanic not found.");
         }
         return "redirect:/admin/services";
     }
